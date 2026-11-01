@@ -17,15 +17,18 @@ public class ThreadReader extends Thread {
     public void run() {
         try {
             controller.pushReader(); // Entra na Região Crítica Inteira
-            
-            // TODO: Fazer 100 acessos aleatórios usando database.ler(index)
-            // (a posição deve vir do gerador de números aleatórios)
-            
-            Thread.sleep(1); // Simula validação ainda dentro da região crítica
-            
-            controller.popReader(); // Sai da Região Crítica
+
+            try {
+                for (int i=0; i<100; i++){
+                    int position = random.nextInt(database.getSize());
+                     database.read(position); // descarta a info msm
+                }
+                    Thread.sleep(1);
+            } finally {
+                controller.popReader();
+            }
+    
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-}
+    }}

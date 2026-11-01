@@ -18,11 +18,17 @@ public class ThreadWriter extends Thread {
         try {
             controller.pushWriter(); // Entra na Região Crítica Inteira
             
-            // TODO: Fazer 100 acessos aleatórios usando database.escrever(index)
+            try{
+                    for (int i=0; i<100; i++){
+                        int position = random.nextInt(database.getSize());
+                        database.write(position); // escreve MODIFICADO no lugar
+                    }
+                Thread.sleep(1); // Simula validação
+
+            } finally {
+                controller.popWriter(); // Sai da Região Crítica
+            }
             
-            Thread.sleep(1); // Simula validação
-            
-            controller.popWriter(); // Sai da Região Crítica
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

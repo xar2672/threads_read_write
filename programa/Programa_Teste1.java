@@ -1,5 +1,8 @@
 package programa;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,12 +17,14 @@ import interfaces.AccessController;
 public class Programa_Teste1 {
     public static void main(String[] args) throws InterruptedException {
         Database database = new Database();
+        double medias[] = new double[101];
         
         // TODO: Realizar o loop para as proporções: 
         // 0 Reader/100 Writers até 100 Readers/0 Writers
         
         for (int readers = 0; readers <= 100; readers++) {
             int writers = 100 - readers;
+            long soma = 0;
             
             // TODO: Executar as 50 repetições para cada proporção
             for (int i = 0; i < 50; i++) {
@@ -37,22 +42,32 @@ public class Programa_Teste1 {
                 long inicio = System.currentTimeMillis();
                 
                 // Roda a i-ésima thread
-                for (Thread t : threads) {
-                    t.start();
-                }
+                for (Thread t : threads) t.start();
+
                 // Usar join() para a thread principal aguardar o fim de todas as outras
-                for (Thread t : threads) {
-                    t.join();
-                }
+                for (Thread t : threads) t.join();
                 
                 // Marca o tempo final
                 long fim = System.currentTimeMillis();
                 long delta_time = fim - inicio;
+
+                soma +=delta_time;
                 
-                // TODO: Armazenar/Acumular o tempo para calcular a média no final
             }
+
+            medias[readers] = soma/50.0;
             
-            // TODO: Imprimir o tempo médio para esta proporção (Leitores x Escritores)
         }
+
+        // salva o resultado de cada proporção em uma linha do csv
+    try (PrintWriter pw = new PrintWriter(new FileWriter("resultados_readers_writers.csv"))) {
+        pw.println("leitores;escritores;tempo_medio");
+        for (int r = 0; r <= 100; r++) {
+            pw.println(r + ";" + (100 - r) + ";" + String.format("%.2f", medias[r]).replace('.', ','));
+        }
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
     }
 }

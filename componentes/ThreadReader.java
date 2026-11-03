@@ -21,13 +21,13 @@ public class ThreadReader extends Thread {
             try {
                 for (int i=0; i<100; i++){
                     int position = random.nextInt(database.getSize());
-                     database.read(position); // descarta a info msm
+                     string word = database.read(position); // Armazena em uma variável local, como pede o enunciado
                 }
                     Thread.sleep(1);
             } finally {
                 controller.popReader();
             }
-    
+
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

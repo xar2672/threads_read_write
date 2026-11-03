@@ -6,21 +6,29 @@ public class MutexController implements AccessController {
 
     @Override
     public synchronized void pushReader() throws InterruptedException {
-        // TODO: Bloquear se alguém (qualquer um) já estiver na base
+        while (occupied == true) {
+            this.wait(); // Se ocupado, aguarda
+        }
+        occupied = true; // Desocupou, entra na zona crítica e fecha
     }
 
     @Override
     public synchronized void popReader() {
-        // TODO: Liberar a base e notificar
+        occupied = false;
+        this.notifyAll();
     }
 
     @Override
     public synchronized void pushWriter() throws InterruptedException {
-        // TODO: Bloquear se alguém (qualquer um) já estiver na base
+        while (occupied == true) {
+            this.wait(); // Se ocupado, aguarda
+        }
+        occupied = true; // Desocupou, entra na zona crítica e fecha
     }
 
     @Override
     public synchronized void popWriter() {
-        // TODO: Liberar a base e notificar
+        occupied = false;
+        this.notifyAll();
     }
 }

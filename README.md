@@ -24,11 +24,10 @@ O sistema está organizado nas seguintes classes principais:
 1. Abra o terminal e navegue até o diretório onde os arquivos `.java` estão localizados.
 2. Compile todos os arquivos Java com o comando:
    ```bash
-   javac *.java
+   javac $(find . -name "*.java")
    ```
 3. Para rodar o experimento, execute qualquer classe que estiver na pasta <Programa>, por exemplo:
    ```bash
-   java Programa_Teste1
+   java programa.Programa_Teste1 // Para o teste com Mutex geral
+   java programa.Programa_Teste2 // Para o teste com Leitores e Escritores
    ```
-
-

@@ -2,7 +2,7 @@ package auxiliares;
 import interfaces.AccessController;
 
 public class ReadController implements AccessController {
-    private boolean databaseLock = false; // False para aberta, true para fechada
+    private boolean databaseLock = false; // True se houver escritor na base, false caso contrário
     private int readerCounter = 0; // Contador para leitores na região crítica
 
     @Override
@@ -10,6 +10,7 @@ public class ReadController implements AccessController {
         while (databaseLock) {
             this.wait();
         }
+
         readerCounter++;
     }
 
@@ -21,13 +22,16 @@ public class ReadController implements AccessController {
 
     @Override
     public synchronized void pushWriter() throws InterruptedException {
-        while(readerCounter > 0) {
-            if()
+        while(readerCounter > 0 || databaseLock == true) {
+            this.wait();
         }
+
+        databaseLock = true;
     }
 
     @Override
     public synchronized void popWriter() {
-        // TODO: Atualizar estado e notificar outras threads
+        databaseLock = false;
+        this.notifyAll();
     }
 }

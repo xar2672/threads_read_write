@@ -2,21 +2,28 @@ package auxiliares;
 import interfaces.AccessController;
 
 public class ReadController implements AccessController {
-    // TODO: Declarar variáveis de controle (ex: contadores de leitores, escritores, condições)
+    private boolean databaseLock = false; // False para aberta, true para fechada
+    private int readerCounter = 0; // Contador para leitores na região crítica
 
     @Override
     public synchronized void pushReader() throws InterruptedException {
-        // TODO: Implementar lógica de espera priorizando leitores
+        while (databaseLock) {
+            this.wait();
+        }
+        readerCounter++;
     }
 
     @Override
     public synchronized void popReader() {
-        // TODO: Atualizar estado e notificar outras threads (notifyAll)
+        readerCounter--;
+        if(readerCounter == 0) this.notifyAll();
     }
 
     @Override
     public synchronized void pushWriter() throws InterruptedException {
-        // TODO: Escritores esperam até que não haja mais leitores na base
+        while(readerCounter > 0) {
+            if()
+        }
     }
 
     @Override

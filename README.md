@@ -28,6 +28,6 @@ O sistema está organizado nas seguintes classes principais:
    ```
 3. Para rodar o experimento, execute qualquer classe que estiver na pasta <Programa>, por exemplo:
    ```bash
-   java programa.Programa_Teste1 // Para o teste com Mutex geral
-   java programa.Programa_Teste2 // Para o teste com Leitores e Escritores
+   java programa.Programa_Teste1 // Para o teste com Leitores e Escritores
+   java programa.Programa_Teste2 // Para o teste com Mutex geral
    ```
